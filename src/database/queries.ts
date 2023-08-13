@@ -5,6 +5,7 @@ type Applicant = {
   email: string;
   phone: string;
   address: string;
+  about: string;
   resumeLink: string;
   linkedin: string;
   github: string;
@@ -24,6 +25,7 @@ const applicants = {
       'SELECT * FROM applicants WHERE email = $1',
       [email]
     );
+
     return rows[0];
   },
 
@@ -34,12 +36,13 @@ const applicants = {
 
   async createOne(applicant: Applicant): Promise<Applicant> {
     const { rows } = await pool.query(
-      'INSERT INTO applicants (name, email, phone, address, resume_link, linkedin, github) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      'INSERT INTO applicants (name, email, phone, address, about, resume_link, linkedin, github) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
       [
         applicant.name,
         applicant.email,
         applicant.phone,
         applicant.address,
+        applicant.about,
         applicant.resumeLink,
         applicant.linkedin,
         applicant.github,
@@ -50,12 +53,13 @@ const applicants = {
 
   async updateOne(id: number, applicant: Applicant): Promise<Applicant> {
     const { rows } = await pool.query(
-      'UPDATE applicants SET name = $1, email = $2, phone = $3, address = $4, resume_link = $5, linkedin = $6, github = $7 WHERE id = $8 RETURNING *',
+      'UPDATE applicants SET name = $1, email = $2, phone = $3, address = $4, about = $5, resume_link = $6, linkedin = $7, github = $8 WHERE id = $9 RETURNING *',
       [
         applicant.name,
         applicant.email,
         applicant.phone,
         applicant.address,
+        applicant.about,
         applicant.resumeLink,
         applicant.linkedin,
         applicant.github,

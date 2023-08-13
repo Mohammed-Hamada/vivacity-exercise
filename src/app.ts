@@ -19,7 +19,13 @@ app.get(
   '/awesome/applicant',
   async (_req: Request, res: Response, next: NextFunction) => {
     try {
-      const applicant = applicants.getOneByEmail('mohammed3rbio@gmail.com');
+      const applicant = await applicants.getOneByEmail(
+        'mohammed3rbio@gmail.com'
+      );
+
+      if (!applicant) {
+        return res.status(404).json({ message: 'Applicant not found' });
+      }
 
       return res.json(applicant);
     } catch (err) {
@@ -34,6 +40,10 @@ app.get(
     try {
       const applicantsList = await applicants.getAll();
 
+      if (!applicantsList.length) {
+        return res.status(404).json({ message: 'No applicants found' });
+      }
+
       return res.json(applicantsList);
     } catch (err) {
       next(err);
@@ -46,6 +56,10 @@ app.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const applicant = await applicants.getOne(+req.params.id);
+
+      if (!applicant) {
+        return res.status(404).json({ message: 'Applicant not found' });
+      }
 
       return res.json(applicant);
     } catch (err) {
@@ -73,6 +87,10 @@ app.put(
     try {
       const applicant = await applicants.updateOne(+req.params.id, req.body);
 
+      if (!applicant) {
+        return res.status(404).json({ message: 'Applicant not found' });
+      }
+
       return res.json(applicant);
     } catch (err) {
       next(err);
@@ -85,6 +103,10 @@ app.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const applicant = await applicants.deleteOne(+req.params.id);
+
+      if (!applicant) {
+        return res.status(404).json({ message: 'Applicant not found' });
+      }
 
       return res.json(applicant);
     } catch (err) {
@@ -99,6 +121,7 @@ app.use((_req: Request, res: Response) => {
 
 // Error Handler
 app.use((_err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  console.log(_err);
   return res.status(500).json({ message: 'Internal Server Error' });
 });
 

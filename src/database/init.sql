@@ -7,6 +7,7 @@ CREATE TABLE "applicants" (
     "name" varchar(255) NOT NULL,
     "email" varchar(255) NOT NULL,
     "phone" varchar(255) NOT NULL,
+    "address" varchar(255) NOT NULL,
     "about" text NOT NULL,
     "resume_link" varchar(255) NOT NULL,
     "linkedin" varchar(255) NOT NULL,
